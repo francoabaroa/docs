@@ -4,7 +4,7 @@ layout: framework_docs
 order: 1
 redirect_from: /docs/getting-started/django/
 subnav_glob: docs/django/getting-started/*.html.*
-objective: Build and deploy a very basic Django app on Fly. This guide is the fastest way to try using Fly, so if you're short on time start here.
+objective: Build and deploy a very basic Django app to Fly.io. This guide is the fastest way to try using Fly.io, so if you're short on time start here.
 related_pages:
   - /docs/django/getting-started/existing
   - /docs/flyctl/
@@ -27,11 +27,9 @@ Make sure that [Python](https://www.python.org/) is already installed on your co
 Go ahead, create and enter your project's folder, here called `hello-django`:
 
 ```cmd
-mkdir hello-django
+mkdir hello-django && cd hello-django
 ```
-```cmd
-cd hello-django
-```
+
 ### Virtual Environment
 
 For this guide, we use [venv](https://docs.python.org/3/library/venv.html#module-venv) but any of the other popular choices such as [Poetry](https://python-poetry.org/), [Pipenv](https://github.com/pypa/pipenv), or [pyenv](https://github.com/pyenv/pyenv) work too.
@@ -83,7 +81,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'hello',  # updated
+    'hello',  # Updated!
 ]
 ```
 
@@ -122,7 +120,7 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('hello.urls'))
+    path('', include('hello.urls'))  # Updated!
 ]
 ```
 
@@ -142,7 +140,9 @@ If you open `http://127.0.0.1:8000/` in your web browser it now displays the tex
 
 ## Django Deployment Checklist
 
-By default, Django is configured for local development. The [How to Deploy Django](https://docs.djangoproject.com/en/stable/howto/deployment/) and [Django Deployment Checklist](https://docs.djangoproject.com/en/stable/howto/deployment/checklist/) guide list the various steps required for a secure deployment. 
+By default, Django is configured for local development. The [How to Deploy Django](https://docs.djangoproject.com/en/stable/howto/deployment/) and [Django Deployment Checklist](https://docs.djangoproject.com/en/stable/howto/deployment/checklist/) guide list the various steps required for a secure deployment.
+
+> You can also find a complete guide [Deploying Django to Production](https://fly.io/django-beats/deploying-django-to-production/) in our [Django Beats Blog](https://fly.io/django-beats/).
 
 However, for demonstration purposes, we can take some shortcuts.
 
@@ -150,7 +150,7 @@ First, in the [`hello_django/settings.py`](https://github.com/fly-apps/hello-dja
 
 ```python
 # hello_django/settings.py
-ALLOWED_HOSTS = ["*"]  # new
+ALLOWED_HOSTS = ["*"]  # Updated!
 ```
 
 Second, install [Gunicorn](https://gunicorn.org/) as our production server.
@@ -165,7 +165,7 @@ Third, create a [`requirements.txt`](https://github.com/fly-apps/hello-django/bl
 pip freeze > requirements.txt
 ```
 
-That's it! We're ready to deploy on Fly.
+That's it! We're ready to deploy on Fly.io.
 
 ## flyctl
 
@@ -180,17 +180,23 @@ To configure and launch the app, run the `fly launch` command and follow the wiz
 fly launch
 ```
 ```output
-Creating app in ~/hello-django
+Creating app in ../flyio//hello-django
 Scanning source code
 Detected a Django app
 ? Choose an app name (leave blank to generate one): hello-django
 automatically selected personal organization: Fly.io
-? Choose a region for deployment: Ashburn, Virginia (US) (iad)
+? Choose a region for deployment: Amsterdam, Netherlands (ams)
 Created app hello-django in organization personal
 Set secrets on hello-django: SECRET_KEY
 Wrote config file fly.toml
 ? Would you like to set up a Postgresql database now? No
 ? Would you like to set up an Upstash Redis database now? No
+
+[INFO] Python 3.10.11 was detected. 'python:3.10-slim-buster' image will be set in the Dockerfile.
+
+Validating ../flyio/hello-django/fly.toml
+Platform: machines
+✓ Configuration is valid
 Your app is ready! Deploy with `flyctl deploy`
 ```
 
