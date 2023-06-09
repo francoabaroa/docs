@@ -85,7 +85,7 @@ INSTALLED_APPS = [
 ]
 ```
 
-### Create an App
+### Create a Django App
 
 Now let's configure a basic view that returns the text, `Hello, Fly!` by updating the [`hello/views.py`](https://github.com/fly-apps/hello-django/blob/main/hello/views.py) file.
 
